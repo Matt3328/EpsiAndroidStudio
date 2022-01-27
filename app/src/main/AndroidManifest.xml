@@ -10,6 +10,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EpsiAndroidStudio">
         <activity
+            android:name=".MagasinDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CompteDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FormActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ScannerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".InscriptionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SplashActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BaseActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
