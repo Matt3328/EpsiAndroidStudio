@@ -2,4 +2,12 @@
     <string name="app_name">EpsiAndroidStudio</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="creation_de_compte">Création de compte</string>
+    <string name="txt_btn_creer">Création de compte</string>
+    <string name="txt_btn_inscription">remplir le formulaire manuellement</string>
+    <string name="txt_btn_modifier_profil">J\'enregistre les modifications</string>
+
+    <string name="txt_fragment_carte">Carte</string>
+    <string name="txt_fragment_offres">Offres</string>
+    <string name="txt_fragment_magasins">Magasins</string>
 </resources>
