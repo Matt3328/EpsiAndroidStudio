@@ -8,9 +8,8 @@ import android.widget.ImageView
 import android.widget.TextView
 
 open class BaseActivity : AppCompatActivity() {
-    fun showBtnBack(){
+    fun showHeaderTitle(){
         val imageViewBack=findViewById<ImageView>(R.id.imageViewBack)
-        imageViewBack.visibility= View.VISIBLE
         imageViewBack.setOnClickListener(View.OnClickListener {
             finish()
         })
@@ -21,9 +20,8 @@ open class BaseActivity : AppCompatActivity() {
         textViewTitle.text = txt
     }
 
-    fun showBtnProfil(){
+    fun showHeaderLogo(){
         val imageViewAvatar=findViewById<ImageView>(R.id.imageViewAvatar)
-        imageViewAvatar.visibility= View.VISIBLE
         imageViewAvatar.setOnClickListener(View.OnClickListener {
             val newIntent= Intent(application,CompteDetailActivity::class.java)
             startActivity(newIntent)
