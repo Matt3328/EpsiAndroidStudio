@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.quantical.epsiandroidstudio">
+
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA"
+        />
 
     <application
         android:allowBackup="true"
@@ -11,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EpsiAndroidStudio">
         <activity
+            android:name=".ScannerActivity"
+            android:exported="false" />
+        <activity
             android:name=".MagasinDetailActivity"
             android:exported="false" />
         <activity
@@ -18,9 +24,6 @@
             android:exported="false" />
         <activity
             android:name=".FormActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ScannerActivity"
             android:exported="false" />
         <activity
             android:name=".InscriptionActivity"
@@ -39,8 +42,7 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false" />
     </application>
 
 </manifest>
