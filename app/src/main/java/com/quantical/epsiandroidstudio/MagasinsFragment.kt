@@ -1,59 +1,115 @@
 package com.quantical.epsiandroidstudio
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
+import okhttp3.*
+import org.json.JSONObject
+import java.io.IOException
 
-/**
- * A simple [Fragment] subclass.
- * Use the [MagasinsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+
 class MagasinsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+
+
+    lateinit var googleMap :GoogleMap
+    @SuppressLint("MissingPermission", "UseRequireInsteadOfGet")
+
+    val locationPermissionRequest = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        when {
+            permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+                // Precise location access granted.
+                googleMap.isMyLocationEnabled=true
+            }
+            permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+                googleMap.isMyLocationEnabled=true
+                // Only approximate location access granted.
+            } else -> {
+            // No location access granted.
+        }
         }
     }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val callback = OnMapReadyCallback() { googleMap ->
+        val okHttpClient: OkHttpClient = OkHttpClient.Builder().build()
+        val mRequestURL ="https://djemam.com/epsi/stores.json"
+        val request = Request.Builder()
+            .url(mRequestURL)
+            .get()
+            .cacheControl(CacheControl.FORCE_NETWORK)
+            .build()
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val data = response.body?.string()
+                if(data !=null){
+                    val jsCities= JSONObject(data)
+                    val items =jsCities.getJSONArray("stores")
+                    for(i in 0 until items.length()){
+                        val jsMagasin = items.getJSONObject(i)
+//                        val storeId =jsMagasin.optString("storeId","")
+//                        val name =jsMagasin.optString("name","")
+//                        val description =jsMagasin.optString("description","")
+//                        val pictureStore =jsMagasin.optString("pictureStore","Paris")
+//                        val address =jsMagasin.optString("address","")
+//                        val zipcode =jsMagasin.optString("zipcode","")
+//                        val city =jsMagasin.optString("city","")
+//                        val longitude =jsMagasin.optString("longitude","")
+//                        val latitude =jsMagasin.optString("latitude","")
+//                        val magasin = Magasin(storeId = storeId, name = name, description = description, pictureStore = pictureStore,
+//                            address = address, city = city,zipcode = zipcode, longitude = longitude,latitude = latitude)
+//                        magasins.add(magasin)
+
+
+
+                        val magasinLatLng = LatLng(jsMagasin.optDouble("longitude",0.0),jsMagasin.optDouble("latitude",0.0))
+                        val addressComplete = jsMagasin.optString("address","") + "-" + jsMagasin.optString("zipcode","") + " " + jsMagasin.optString("city","")
+                        googleMap.addMarker(MarkerOptions().position(magasinLatLng).title(jsMagasin.optString("name","")).snippet(jsMagasin.optString(addressComplete)))
+                    }
+
+                }
+            }
+        })
+        }
+        this.googleMap=googleMap
+        locationPermissionRequest.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
+
+    }
+
+
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_magasins, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MagasinsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MagasinsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        //mapFragment?.getMapAsync(callback)
     }
 }

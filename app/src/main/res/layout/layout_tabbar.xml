@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp">
         <TextView
-            android:id="@+id/textViewTab1Carte"
+            android:id="@+id/textViewTabCarte"
             android:background="@color/purple_700"
             android:textColor="@color/white"
             android:layout_width="match_parent"
