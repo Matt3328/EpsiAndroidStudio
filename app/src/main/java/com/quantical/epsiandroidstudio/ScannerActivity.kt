@@ -19,10 +19,12 @@ import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
 import com.quantical.epsiandroidstudio.R
 import android.content.Intent
+import android.graphics.Insets.add
 import android.net.Uri
 import android.widget.ImageButton
 import android.widget.TextView
 import com.google.zxing.integration.android.IntentIntegrator
+import org.json.JSONObject
 import java.lang.Exception
 
 
@@ -44,16 +46,43 @@ class ScannerActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         var result = IntentIntegrator.parseActivityResult(resultCode, data)
         if (result != null) {
-            AlertDialog.Builder(this)
-                .setMessage("Would you like to go to ${result.contents}?")
-                .setPositiveButton("Yes", DialogInterface.OnClickListener { dialogInterface, i ->
-                    val intent = Intent(Intent.ACTION_WEB_SEARCH)
-                    intent.putExtra(SearchManager.QUERY,result.contents)
-                    startActivity(intent)
-                })
-                .setNegativeButton("No", DialogInterface.OnClickListener { dialogInterface, i ->  })
-                .create()
-                .show()
+            print(result.toString())
+            val data = result.toString()
+            if(data !=null){
+                AlertDialog.Builder(this)
+                    .setMessage("Would you like to go to ${result.contents}?")
+                    .setPositiveButton("Yes", DialogInterface.OnClickListener { dialogInterface, i ->
+                        val jsOb= JSONObject(data)
+                        val jsArray =jsOb.getJSONArray("items")
+                        val jsInfo = jsArray.getJSONObject(0)
+                        val firstName = jsInfo.optString("firstName", "")
+                        val lastName = jsInfo.optString("lastName", "")
+                        val email = jsInfo.optString("email", "")
+                        val address = jsInfo.optString("address", "")
+                        val zipcode = jsInfo.optString("zipcode", "")
+                        val city = jsInfo.optString("city", "")
+                        val cardRef = jsInfo.optString("cardRef", "")
+                        val info = Info(firstName, lastName, email, address, zipcode, city, cardRef)
+                        //Info.add(info)
+                        val newIntent= Intent(applicationContext,InscriptionActivity::class.java)
+                        newIntent.putExtra("firstName", info.firstName)
+                        newIntent.putExtra("lastName", info.lastName)
+                        newIntent.putExtra("email", info.email)
+                        newIntent.putExtra("address", info.address)
+                        newIntent.putExtra("zipcode", info.zipcode)
+                        newIntent.putExtra("city", info.city)
+                        newIntent.putExtra("cardRef", info.cardRef)
+                        applicationContext.startActivity(newIntent)
+                        finish()
+                    })
+                    .setNegativeButton("No",DialogInterface.OnClickListener { dialogInterface, i ->  })
+                    .create()
+                    .show()
+
+
+
+            }
+
         }
     }
 }

@@ -8,14 +8,12 @@
         android:layout_height="60dp">
         <TextView
             android:id="@+id/textViewTab1Carte"
-            style="@style/TextViewTab"
             android:background="@color/purple_700"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="Carte"/>
         <TextView
-            style="@style/TextViewTab"
             android:id="@+id/textViewTabOffres"
             android:background="@color/purple_500"
             android:layout_width="match_parent"
@@ -23,7 +21,6 @@
             android:layout_weight="1"
             android:text="Offres"/>
         <TextView
-            style="@style/TextViewTab"
             android:id="@+id/textViewTabMagasins"
             android:background="@color/purple_500"
             android:layout_width="match_parent"
