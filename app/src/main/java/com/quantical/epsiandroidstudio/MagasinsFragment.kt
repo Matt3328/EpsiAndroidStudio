@@ -68,13 +68,12 @@ class MagasinsFragment : Fragment() {
                     val items =jsCities.getJSONArray("stores")
                     for(i in 0 until items.length()){
                         val jsMagasin = items.getJSONObject(i)
-//                        val storeId =jsMagasin.optString("storeId","")
-//                        val name =jsMagasin.optString("name","")
-//                        val description =jsMagasin.optString("description","")
-//                        val pictureStore =jsMagasin.optString("pictureStore","Paris")
-//                        val address =jsMagasin.optString("address","")
-//                        val zipcode =jsMagasin.optString("zipcode","")
-//                        val city =jsMagasin.optString("city","")
+                        val name =jsMagasin.optString("name","")
+                        val description =jsMagasin.optString("description","")
+                        val pictureStore =jsMagasin.optString("pictureStore","Paris")
+                        val address =jsMagasin.optString("address","")
+                        val zipcode =jsMagasin.optString("zipcode","")
+                        val city =jsMagasin.optString("city","")
 //                        val longitude =jsMagasin.optString("longitude","")
 //                        val latitude =jsMagasin.optString("latitude","")
 //                        val magasin = Magasin(storeId = storeId, name = name, description = description, pictureStore = pictureStore,
@@ -86,6 +85,7 @@ class MagasinsFragment : Fragment() {
                         val magasinLatLng = LatLng(jsMagasin.optDouble("longitude",0.0),jsMagasin.optDouble("latitude",0.0))
                         val addressComplete = jsMagasin.optString("address","") + "-" + jsMagasin.optString("zipcode","") + " " + jsMagasin.optString("city","")
                         googleMap.addMarker(MarkerOptions().position(magasinLatLng).title(jsMagasin.optString("name","")).snippet(jsMagasin.optString(addressComplete)))
+                        // how to add a button in googleMap?
                     }
 
                 }
@@ -109,7 +109,5 @@ class MagasinsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-        //mapFragment?.getMapAsync(callback)
     }
 }
