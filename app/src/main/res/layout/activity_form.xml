@@ -2,16 +2,43 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context=".FormActivity">
-    <TextView
-        android:text="@string/creation_de_compte"
-        android:textColor="@color/black"
-        android:textSize="30sp"
+    tools:context=".MainActivity">
+
+
+    <include
+        layout="@layout/layout_header_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"/>
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+            <Button
+                android:id="@+id/buttonQRCode"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:text="Scan QRCode" />
+
+            <Button
+                android:id="@+id/buttonInscription"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:text="Inscription" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
 
 </LinearLayout>

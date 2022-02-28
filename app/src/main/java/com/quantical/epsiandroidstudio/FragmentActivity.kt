@@ -13,7 +13,7 @@ class FragmentActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_carte)
-        val textViewTabCarte = findViewById<TextView>(R.id.textViewTabCarte)
+        val textViewTabCarte = findViewById<TextView>(R.id.textViewTabOffres)
         val textViewTabOffres = findViewById<TextView>(R.id.textViewTabOffres)
         val textViewTabMagasins = findViewById<TextView>(R.id.textViewTabMagasins)
 
