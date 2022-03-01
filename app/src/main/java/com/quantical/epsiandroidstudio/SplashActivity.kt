@@ -19,7 +19,7 @@ class SplashActivity : AppCompatActivity() {
                 finish()
             }
             else {
-                val newIntent= Intent(application, MainActivity::class.java)
+                val newIntent= Intent(application, FragmentActivity::class.java)
                 startActivity(newIntent)
                 finish()
             }

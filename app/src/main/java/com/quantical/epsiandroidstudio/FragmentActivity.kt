@@ -12,8 +12,8 @@ class FragmentActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_carte)
-        val textViewTabCarte = findViewById<TextView>(R.id.textViewTabOffres)
+        setContentView(R.layout.activity_fragment)
+        val textViewTabCarte = findViewById<TextView>(R.id.textViewTab1Carte)
         val textViewTabOffres = findViewById<TextView>(R.id.textViewTabOffres)
         val textViewTabMagasins = findViewById<TextView>(R.id.textViewTabMagasins)
 
@@ -29,7 +29,7 @@ class FragmentActivity : BaseActivity() {
             showTabMagasins()
         })
 
-        showTabOffres()
+        showTabCarte()
     }
 
     private fun showTabCarte() {
@@ -42,7 +42,7 @@ class FragmentActivity : BaseActivity() {
 
     private fun showTabOffres() {
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.contentLayout, OffresFragment::class.java, null)
+        transaction.replace(R.id.contentLayout, OffresTabFragment::class.java, null)
         transaction.setReorderingAllowed(true)
         transaction.addToBackStack("fF") // name can be null
         transaction.commit()

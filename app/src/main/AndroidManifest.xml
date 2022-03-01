@@ -17,6 +17,9 @@
             android:name=".ScannerActivity"
             android:exported="false" />
         <activity
+            android:name=".FragmentActivity"
+            android:exported="false" />
+        <activity
             android:name=".MagasinDetailActivity"
             android:exported="false" />
         <activity

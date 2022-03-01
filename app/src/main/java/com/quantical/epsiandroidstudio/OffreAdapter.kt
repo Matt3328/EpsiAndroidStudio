@@ -1,4 +1,5 @@
 package com.quantical.epsiandroidstudio
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,7 @@ class OffreAdapter(private val offres: ArrayList<Offre>): RecyclerView.Adapter<O
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val offre = offres[position]
+        Log.d("WS", offre.toString())
         holder.textViewName.text=offre.name
         holder.textViewDescription.text=offre.description
         Picasso.get().load(offre.picture_url).into(holder.imageViewOffre)

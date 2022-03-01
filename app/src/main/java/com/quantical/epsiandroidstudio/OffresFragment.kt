@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import okhttp3.*
@@ -21,7 +22,7 @@ class OffresFragment : Fragment() {
         savedInstanceState: Bundle?
 
     ): View? {
-        return inflater.inflate(R.layout.fragment_offres, container, false)
+        return inflater.inflate(R.layout.cell_offre, container, false)
 
     }
 
@@ -55,14 +56,19 @@ class OffresFragment : Fragment() {
                         val offre = Offre(name, description, picture_url)
                         Offres.add(offre)
                     }
-                    val recyclerView = getView()?.findViewById<RecyclerView>(R.id.recyclerViewOffres);
+                    val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewOffres);
                     if (recyclerView != null) {
                         recyclerView.layoutManager = LinearLayoutManager(getContext())
                     }
-                    val RayonAdapter = OffreAdapter(Offres)
+                    val OffreAdapter = OffreAdapter(Offres)
                     if (recyclerView != null) {
-                        recyclerView.adapter = RayonAdapter
+                        recyclerView.adapter = OffreAdapter
                     }
+                    getActivity()?.runOnUiThread(Runnable {
+                        OffreAdapter.notifyDataSetChanged()
+                    })
+                    Log.d("WS",data)
+                    Log.d("Student","${Offres.size}")
 
                 }
             }
