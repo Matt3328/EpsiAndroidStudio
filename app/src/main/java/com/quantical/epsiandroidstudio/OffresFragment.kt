@@ -1,12 +1,12 @@
 package com.quantical.epsiandroidstudio
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import okhttp3.*
@@ -15,12 +15,23 @@ import java.io.IOException
 
 
 class OffresFragment : Fragment() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val offres = arrayListOf<Offre>()
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+
+    ): View? {
+        return inflater.inflate(R.layout.fragment_offres, container, false)
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val offreFragment = childFragmentManager.findFragmentById(R.id.recyclerViewOffres)
+        val Offres = arrayListOf<Offre>()
 
         val okHttpClient: OkHttpClient = OkHttpClient.Builder().build()
-        val mRequestURL ="https://djemam.com/epsi/offers.json"
+        val mRequestURL = "https://djemam.com/epsi/offers.json"
         val request = Request.Builder()
             .url(mRequestURL)
             .get()
@@ -28,6 +39,7 @@ class OffresFragment : Fragment() {
             .build()
         okHttpClient.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
+                TODO("Not yet implemented")
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -36,38 +48,25 @@ class OffresFragment : Fragment() {
                     val jsOb= JSONObject(data)
                     val jsArray =jsOb.getJSONArray("items")
                     for(i in 0 until jsArray.length()){
-                        val jsOffre = jsArray.getJSONObject(i)
-                        val name =jsOffre.optString("name","")
-                        val description =jsOffre.optString("description","")
-                        val picture_url =jsOffre.optString("picture_url","")
-                        val offre = Offre(name, picture_url = picture_url, description = description)
-                        offres.add(offre)
-                        Log.d("Offre",offre.name)
+                        val jsRayon = jsArray.getJSONObject(i)
+                        val name =jsRayon.optString("name","")
+                        val description =jsRayon.optString("description","")
+                        val picture_url =jsRayon.optString("picture_url","")
+                        val offre = Offre(name, description, picture_url)
+                        Offres.add(offre)
                     }
-                    runOnUiThread(Runnable {
-                        OffreAdapter.notifyDataSetChanged()
-                    })
+                    val recyclerView = getView()?.findViewById<RecyclerView>(R.id.recyclerViewOffres);
+                    if (recyclerView != null) {
+                        recyclerView.layoutManager = LinearLayoutManager(getContext())
+                    }
+                    val RayonAdapter = OffreAdapter(Offres)
+                    if (recyclerView != null) {
+                        recyclerView.adapter = RayonAdapter
+                    }
 
                 }
             }
         })
     }
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val offres = arrayListOf<Offre>()
-        val offreAdapter = OffreAdapter(OffresFragment,offres)
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewOffres)
-        recyclerView.layoutManager = LinearLayoutManager(OffresFragment)
-        recyclerView.adapter = offreAdapter
-
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_offres, container, false)
-
-    }
 }
+

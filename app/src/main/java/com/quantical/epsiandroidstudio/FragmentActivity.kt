@@ -29,7 +29,7 @@ class FragmentActivity : BaseActivity() {
             showTabMagasins()
         })
 
-        showTabCarte()
+        showTabOffres()
     }
 
     private fun showTabCarte() {
@@ -42,7 +42,7 @@ class FragmentActivity : BaseActivity() {
 
     private fun showTabOffres() {
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.contentLayout, OffresTabFragment::class.java, null)
+        transaction.replace(R.id.contentLayout, OffresFragment::class.java, null)
         transaction.setReorderingAllowed(true)
         transaction.addToBackStack("fF") // name can be null
         transaction.commit()

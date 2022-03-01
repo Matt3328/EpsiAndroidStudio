@@ -2,15 +2,15 @@ package com.quantical.epsiandroidstudio
 
 import android.content.Intent
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
+//import com.squareup.picasso.Picasso
 
 class MagasinAdapter (private val magasins: ArrayList<Magasin>): RecyclerView.Adapter<MagasinAdapter.ViewHolder>() {
     class ViewHolder (view: View) : RecyclerView.ViewHolder(view){
-        val popupCarte = view.findViewById<LinearLayout>(R.id.contentLayoutProducts)
 
 
     }
@@ -22,16 +22,13 @@ class MagasinAdapter (private val magasins: ArrayList<Magasin>): RecyclerView.Ad
         val magasin = magasins.get(position)
 
 
-        holder.popupCarte.setOnClickListener(View.OnClickListener {
-            val context = holder.popupCarte.context
-            val newIntent = Intent(context, MagasinDetailActivity::class.java)
-            newIntent.putExtra("magasin_name",magasin.name)
-            newIntent.putExtra("magasin_picture_url",magasin.pictureStore)
-            newIntent.putExtra("magasin_adresse",magasin.address)
-            newIntent.putExtra("magasin_zipcode_ville",magasin.zipcode + magasin.city)
-            newIntent.putExtra("magasin_description",magasin.description)
-            context.startActivity(newIntent)
-        })
+    }
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        TODO("Not yet implemented")
+    }
+
+    override fun getItemCount(): Int {
+        TODO("Not yet implemented")
     }
 }
