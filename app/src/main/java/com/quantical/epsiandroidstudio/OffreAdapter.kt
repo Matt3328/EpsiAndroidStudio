@@ -7,8 +7,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import okhttp3.Callback
 
 class OffreAdapter(private val offres: ArrayList<Offre>): RecyclerView.Adapter<OffreAdapter.ViewHolder>(){
+
+    private lateinit var mList: ArrayList<Offre>
 
     class ViewHolder (view: View) : RecyclerView.ViewHolder(view){
         val textViewName = view.findViewById<TextView>(R.id.textViewName)
@@ -18,6 +21,7 @@ class OffreAdapter(private val offres: ArrayList<Offre>): RecyclerView.Adapter<O
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(viewGroup.context).inflate(R.layout.cell_offre, viewGroup, false)
+        Log.d("test","test")
         return ViewHolder(view)
     }
 
@@ -32,6 +36,10 @@ class OffreAdapter(private val offres: ArrayList<Offre>): RecyclerView.Adapter<O
 
     override fun getItemCount(): Int {
         return offres.size
+    }
+    fun updateAdapter(mDataList: ArrayList<Offre>) {
+        this.mList = mDataList
+        notifyDataSetChanged()
     }
 
 }
