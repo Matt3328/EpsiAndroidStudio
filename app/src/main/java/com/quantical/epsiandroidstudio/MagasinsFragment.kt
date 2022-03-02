@@ -2,6 +2,7 @@ package com.quantical.epsiandroidstudio
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -32,76 +33,81 @@ class MagasinsFragment : Fragment() {
     ) { permissions ->
         when {
             permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
-                // Precise location access granted.
                 googleMap.isMyLocationEnabled=true
             }
             permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
                 googleMap.isMyLocationEnabled=true
-                // Only approximate location access granted.
             } else -> {
-            // No location access granted.
         }
         }
     }
 
-    val cities = "{\"cities\":[{\"city\":\"Bordeaux\",\"lan\":44.847807,\"lng\":-0.579472},\n" +
-            "{\"city\":\"Pau\",\"lan\":43.293295,\"lng\":-0.363570},\n" +
-            "{\"city\":\"Nantes\",\"lan\":47.215585,\"lng\":-1.554908},\n" +
-            "{\"city\":\"Paris\",\"lan\":48.854885,\"lng\":2.338646},\n" +
-            "{\"city\":\"Lille\",\"lan\":50.608719,\"lng\":3.063295},\n" +
-            "{\"city\":\"Marseille\",\"lan\":43.293551,\"lng\":5.377397},\n" +
-            "{\"city\":\"Nice\",\"lan\":43.701680,\"lng\":7.260711},\n" +
-            "{\"city\":\"Lyon\",\"lan\":45.759132,\"lng\":4.834604},\n" +
-            "{\"city\":\"Montpellier\",\"lan\":43.586120,\"lng\":3.896094},\n" +
-            "{\"city\":\"Toulouse\",\"lan\":43.533513,\"lng\":1.411209},\n" +
-            "{\"city\":\"Brest\",\"lan\":48.389353,\"lng\":-4.488616},\n" +
-            "{\"city\":\"Limoges\",\"lan\":45.838771,\"lng\":1.262108},\n" +
-            "{\"city\":\"Clermont-Ferrand\",\"lan\":45.780535,\"lng\":3.093242},\n" +
-            "{\"city\":\"Tours\",\"lan\":47.404355,\"lng\":0.688930},\n" +
-            "{\"city\":\"Strasbourg\",\"lan\":48.540395,\"lng\":7.727753}]}"
 
     private val callback = OnMapReadyCallback { googleMap ->
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
-        val sydney = LatLng(-34.0, 151.0)
-        val paris = LatLng(48.854885, 2.338646)
-        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap.addMarker(MarkerOptions().position(sydney).snippet("Pour toi François"))
-        val jsCities= JSONObject(cities)
-        val items=jsCities.getJSONArray("cities")
-        for (i in 0 until items.length()){
-            val city = items.getJSONObject(i)
-            val cityLatLng = LatLng(city.optDouble("lan",0.0),city.optDouble("lng",0.0))
-            googleMap.addMarker(MarkerOptions().position(cityLatLng).title(city.optString("city","")).snippet("Pour toi François"))
-        }
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(paris))
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(paris,5.5f))
 
-        googleMap.setOnMapClickListener {
+        val okHttpClient: OkHttpClient = OkHttpClient.Builder().build()
+        val mRequestURL ="https://djemam.com/epsi/stores.json"
+        val request = Request.Builder()
+            .url(mRequestURL)
+            .get()
+            .cacheControl(CacheControl.FORCE_NETWORK)
+            .build()
 
-        }
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onResponse(call: Call, response: Response) {
+                val data = response.body?.string()
+                if (data != null) {
+                    val jsOb = JSONObject(data)
+                    val items = jsOb.getJSONArray("stores")
+                    for (i in 0 until items.length()) {
+                        val magasin = items.getJSONObject(i)
+                        val name =magasin.optString("name","")
+                        val pictureStore =magasin.optString("pictureStore","")
+                        val address =magasin.optString("address","")
+                        val zipcode =magasin.optString("zipcode","")
+                        val city =magasin.optString("city","Paris")
+                        val description =magasin.optString("description","000000")
+                        val magasinClass = Magasin(name,
+                            pictureStore = pictureStore, address = address,
+                             zipcode = zipcode, city = city,description = description)
 
-        googleMap.setOnInfoWindowClickListener {
+                        val magasinLatLng = LatLng(
+                            magasin.optDouble("longitude", 0.0),
+                            magasin.optDouble("latitude", 0.0)
+                        )
+                        val addressComplete =
+                            magasin.optString("address", "") + "-" + magasin.optString(
+                                "zipcode",
+                                ""
+                            ) + " " + magasin.optString("city", "")
+                        googleMap.addMarker(
+                            MarkerOptions().position(magasinLatLng)
+                                .title(magasin.optString("name", ""))
+                                .snippet(magasin.optString(addressComplete))
+                        )
+                    }
 
-        }
+                    // override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+                    googleMap.setOnMarkerClickListener(object : GoogleMap.OnMarkerClickListener {
+                        override fun onMarkerClick(p0: Marker): Boolean {
+                            // val context = holder.contentLayoutProducts.context
+                            val newIntent = Intent(context, MagasinDetailActivity::class.java)
+                            val address = Magasin::address + " " + Magasin::city + Magasin::zipcode
+                            newIntent.putExtra("magasin_name",Magasin::name)
+                            newIntent.putExtra("magasin_picture_url",Magasin::pictureStore)
+                            newIntent.putExtra("magasin_adresse",address)
+                            newIntent.putExtra("product_description",Magasin::description)
+                            context.startActivity(newIntent)
 
-        googleMap.setOnMarkerClickListener(object : GoogleMap.OnMarkerClickListener {
-            override fun onMarkerClick(p0: Marker): Boolean {
-
-                return false
+                            return false
+                        }
+                    })
+                }
             }
         })
-        this.googleMap=googleMap
-        locationPermissionRequest.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
-
-    }
+       this.googleMap=googleMap
+       locationPermissionRequest.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
+    };
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -113,7 +119,7 @@ class MagasinsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-        mapFragment?.getMapAsync(callback)
+        val magasinFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        magasinFragment?.getMapAsync(callback)
     }
 }
