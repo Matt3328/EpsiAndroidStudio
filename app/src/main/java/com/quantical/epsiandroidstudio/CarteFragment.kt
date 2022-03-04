@@ -13,11 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [CarteFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class CarteFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -35,7 +30,6 @@ class CarteFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_carte, container, false)
     }
 
@@ -43,22 +37,13 @@ class CarteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val nom = view.findViewById<TextView>(R.id.Nom)
         val prenom = view.findViewById<TextView>(R.id.Prenom)
-        val  cardref = view.findViewById<TextView>(R.id.Cardref);
+        val cardref = view.findViewById<TextView>(R.id.Cardref);
         nom.setText((activity as FragmentActivity).readSharedPreferences("lastName"))
         prenom.setText((activity as FragmentActivity).readSharedPreferences("firstName"))
         cardref.setText((activity as FragmentActivity).readSharedPreferences("cardRef"))
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment CarteFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             CarteFragment().apply {
