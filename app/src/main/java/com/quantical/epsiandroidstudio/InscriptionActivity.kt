@@ -1,6 +1,7 @@
 package com.quantical.epsiandroidstudio
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -43,6 +44,8 @@ class InscriptionActivity : BaseActivity() {
             writeSharedPreferences("city",editCity.text.toString())
             writeSharedPreferences("zipcode",editZipcode.text.toString())
             writeSharedPreferences("cardRef",editCardRef.text.toString())
+            val newIntent= Intent(application, FragmentActivity::class.java)
+            startActivity(newIntent)
         })
     }
     fun writeSharedPreferences(key : String , value : String){
