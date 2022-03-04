@@ -94,14 +94,15 @@ class MagasinsFragment : Fragment() {
                     // override fun onBindViewHolder(holder: ViewHolder, position: Int) {
                     googleMap.setOnMarkerClickListener(object : GoogleMap.OnMarkerClickListener {
                         override fun onMarkerClick(p0: Marker): Boolean {
-                            // val context = holder.contentLayoutProducts.context
+                            //val context = holder.contentLayoutProducts.context
                             val newIntent = Intent(context, MagasinDetailActivity::class.java)
-                            //val address = Magasin::address + " " + Magasin::city + Magasin::zipcode
-                            //newIntent.putExtra("magasin_name",Magasin::name)
-                            //newIntent.putExtra("magasin_picture_url",Magasin::pictureStore)
-                            //newIntent.putExtra("magasin_adresse",address)
-                            //newIntent.putExtra("product_description",Magasin::description)
-                            context?.startActivity(newIntent)
+                            val address = Magasin::address.toString() +" " +Magasin::city.toString() + Magasin::zipcode.toString()
+                            val bundle = Bundle()
+                            bundle.putString("magasin_name", Magasin::name.toString())
+                            bundle.putString("magasin_picture_url",Magasin::pictureStore.toString())
+                            bundle.putString("magasin_adresse",address)
+                            bundle.putString("product_description",Magasin::description.toString())
+                            //context.startActivity(bundle)
 
                             return false
                         }
@@ -113,13 +114,13 @@ class MagasinsFragment : Fragment() {
        locationPermissionRequest.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
     };
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_magasins, container, false)
-    }
+//    override fun onCreateView(
+//        inflater: LayoutInflater,
+//        container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View? {
+//        return inflater.inflate(R.layout.fragment_magasins, container, false)
+//    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

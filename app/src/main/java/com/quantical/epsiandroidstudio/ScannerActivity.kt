@@ -60,7 +60,7 @@ class ScannerActivity : AppCompatActivity() {
                         val zipcode = jsOb.optString("zipcode", "")
                         val city = jsOb.optString("city", "")
                         val cardRef = jsOb.optString("cardRef", "")
-                        val info = Info(firstName, lastName, email, address, zipcode, city, cardRef)
+//                        val info = Info(firstName, lastName, email, address, zipcode, city, cardRef)
                         //Info.add(info)
                         val newIntent= Intent(applicationContext,InscriptionActivity::class.java)
                         newIntent.putExtra("firstName", firstName)
