@@ -28,10 +28,11 @@ import org.json.JSONObject
 import java.lang.Exception
 
 
-class ScannerActivity : AppCompatActivity() {
+class ScannerActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scanner)
+        showBtnBack()
         val textView: TextView = findViewById(R.id.textView)
         val qrButton: ImageButton = findViewById(R.id.qr_button)
         qrButton.setOnClickListener {

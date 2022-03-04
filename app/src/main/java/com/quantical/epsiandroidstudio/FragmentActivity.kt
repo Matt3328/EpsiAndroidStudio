@@ -43,6 +43,7 @@ class FragmentActivity : BaseActivity() {
     private fun showTabCarte() {
         showBtnUser()
         showBtnBack()
+        readSharedPreferences("firstName")
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.contentLayout, CarteTabFragment::class.java, null)
         transaction.setReorderingAllowed(true)
@@ -82,5 +83,6 @@ class FragmentActivity : BaseActivity() {
         val txt=sharedPreferences.getString(key,"Not found")
         return txt.toString()
     }
+
 
 }

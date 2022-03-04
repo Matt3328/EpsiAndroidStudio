@@ -7,10 +7,11 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 
-class InscriptionActivity : AppCompatActivity() {
+class InscriptionActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inscription)
+        showBtnBack()
         val firstName = intent.getStringExtra("firstName")
         val lastName = intent.getStringExtra("lastName")
         val email = intent.getStringExtra("email")
