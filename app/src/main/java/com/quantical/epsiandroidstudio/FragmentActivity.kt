@@ -1,8 +1,16 @@
 package com.quantical.epsiandroidstudio
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import okhttp3.*
+import org.json.JSONObject
+import java.io.IOException
+import java.security.AccessController.getContext
 
 class FragmentActivity : BaseActivity() {
 
@@ -33,6 +41,8 @@ class FragmentActivity : BaseActivity() {
     }
 
     private fun showTabCarte() {
+        showBtnUser()
+        showBtnBack()
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.contentLayout, CarteTabFragment::class.java, null)
         transaction.setReorderingAllowed(true)
@@ -41,6 +51,9 @@ class FragmentActivity : BaseActivity() {
     }
 
     private fun showTabOffres() {
+        showBtnUser()
+        showBtnBack()
+
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.contentLayout, OffresTabFragment::class.java, null)
         transaction.setReorderingAllowed(true)
@@ -49,6 +62,8 @@ class FragmentActivity : BaseActivity() {
     }
 
     private fun showTabMagasins() {
+        showBtnUser()
+        showBtnBack()
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.contentLayout, MagasinsTabFragment::class.java, null)
         transaction.setReorderingAllowed(true)
@@ -61,6 +76,11 @@ class FragmentActivity : BaseActivity() {
             super.onBackPressed()
         else
             finish()
+    }
+    fun readSharedPreferences(key : String) : String{
+        val sharedPreferences= getSharedPreferences("epsi", Context.MODE_PRIVATE)
+        val txt=sharedPreferences.getString(key,"Not found")
+        return txt.toString()
     }
 
 }

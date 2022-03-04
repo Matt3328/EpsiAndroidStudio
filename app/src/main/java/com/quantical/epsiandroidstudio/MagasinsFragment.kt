@@ -54,6 +54,10 @@ class MagasinsFragment : Fragment() {
             .build()
 
         okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                TODO("Not yet implemented")
+            }
+
             override fun onResponse(call: Call, response: Response) {
                 val data = response.body?.string()
                 if (data != null) {
@@ -92,12 +96,12 @@ class MagasinsFragment : Fragment() {
                         override fun onMarkerClick(p0: Marker): Boolean {
                             // val context = holder.contentLayoutProducts.context
                             val newIntent = Intent(context, MagasinDetailActivity::class.java)
-                            val address = Magasin::address + " " + Magasin::city + Magasin::zipcode
-                            newIntent.putExtra("magasin_name",Magasin::name)
-                            newIntent.putExtra("magasin_picture_url",Magasin::pictureStore)
-                            newIntent.putExtra("magasin_adresse",address)
-                            newIntent.putExtra("product_description",Magasin::description)
-                            context.startActivity(newIntent)
+                            //val address = Magasin::address + " " + Magasin::city + Magasin::zipcode
+                            //newIntent.putExtra("magasin_name",Magasin::name)
+                            //newIntent.putExtra("magasin_picture_url",Magasin::pictureStore)
+                            //newIntent.putExtra("magasin_adresse",address)
+                            //newIntent.putExtra("product_description",Magasin::description)
+                            context?.startActivity(newIntent)
 
                             return false
                         }
